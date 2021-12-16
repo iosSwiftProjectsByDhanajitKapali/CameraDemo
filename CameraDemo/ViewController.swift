@@ -67,6 +67,16 @@ extension ViewController{
         previewLayer.frame = view.bounds
         shutterButton.center = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height - 80)
     }
+    
+    override public var shouldAutorotate: Bool {
+        return false
+      }
+      override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+      }
+      override public var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return .portrait
+      }
 }
 
 // MARK:  Private Methods For Camera
