@@ -21,8 +21,8 @@ class ViewController: UIViewController {
     
     //4.Shutter Button
     private let shutterButton : UIButton = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        button.layer.cornerRadius = 50
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
+        button.layer.cornerRadius = 40
         button.layer.borderWidth = 10
         button.layer.borderColor = UIColor.white.cgColor
         
@@ -39,6 +39,13 @@ class ViewController: UIViewController {
     //Tap to Focus
     var previousPointOfFocus: CGPoint = .zero
     let focusView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+    
+    
+
+}
+
+// MARK:  Lifecyle Methods
+extension ViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,9 +65,8 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         previewLayer.frame = view.bounds
-        shutterButton.center = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height - 100)
+        shutterButton.center = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height - 80)
     }
-
 }
 
 // MARK:  Private Methods For Camera
@@ -140,15 +146,11 @@ private extension ViewController{
         if let device = AVCaptureDevice.default(for: .video) {
             do {
                 try device.lockForConfiguration()
+                print("Factor -> \(factor)")
                 zoomScale = min(maximumZoom, max(minimumZoom, min(beginZoomScale! * factor, device.activeFormat.videoMaxZoomFactor)))
-                zoomScale += factor
-                if zoomScale < 1.0 || zoomScale > 5.0 { return }
                 device.videoZoomFactor = zoomScale
-                print(zoomScale)
-//                DispatchQueue.main.async {
-//                    let zoomValue = Double(round(1000 * self.zoomScale) / 1000)
-//                    self.delegate?.updateZoomValue(value: "\(zoomValue.rounded(toPlaces: 1))")
-//                }
+                
+                print("Zoom Scale -> \(zoomScale)")
                 device.unlockForConfiguration()
                 
             } catch {
@@ -253,7 +255,7 @@ extension ViewController : UIGestureRecognizerDelegate {
     }
 }
 
-// MARK:  UIColor Extension
+// MARK:  UIColor Extension Methods
 extension UIColor {
 
     // Check if the color is light or dark, as defined by the injected lightness threshold.
@@ -292,3 +294,5 @@ extension UIColor {
         )
     }
 }
+
+
