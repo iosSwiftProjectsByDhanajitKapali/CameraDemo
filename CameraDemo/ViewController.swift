@@ -249,8 +249,33 @@ extension ViewController : AVCapturePhotoCaptureDelegate{
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFill
         imageView.frame = view.bounds
-        view.addSubview(imageView)
+        imageView.tag = 1
+        self.view.addSubview(imageView)
+        
+        //Add a cross button to close clicked image preview
+        let closeButton : UIButton = {
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+            button.setImage(UIImage(systemName: "xmark"), for: .normal)
+            button.backgroundColor = .white
+            button.layer.cornerRadius = 22
+            
+            return button
+        }()
+        closeButton.center = CGPoint(x: 40, y: 50)
+        closeButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
+        closeButton.tag = 2
+        view.addSubview(closeButton)
+        
     }
+    
+    @objc func closeButtonPressed(){
+        if let theImageView = self.view.viewWithTag(1) , let theCloseButton = self.view.viewWithTag(2){
+            theCloseButton.removeFromSuperview()
+            theImageView.removeFromSuperview()
+            session?.startRunning()
+        }
+    }
+    
 }
 
 
